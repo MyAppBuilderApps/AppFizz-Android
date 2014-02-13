@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>jQuery Example</title>
+    <script>
+      $(document).ready(function() {
+        // Execute some code here
+        var
+  div    = document.getElementById('me'),
+  showMe = function(response) {
+    if (response.status !== 'connected') {
+      div.innerHTML = '<em>Not Connected</em>';
+    } else {
+      FB.api('/me', function(response) {
+        var html = '<table>';
+        for (var key in response) {
+          html += (
+            '<tr>' +
+              '<th>' + key + '</th>' +
+              '<td>' + response[key] + '</td>' +
+            '</tr>'
+          );
+        }
+        div.innerHTML = html;
+      });
+    }
+  };
+FB.getLoginStatus(function(response) {
+  showMe(response);
+  FB.Event.subscribe('auth.authResponseChange', showMe);
+});
+      });
+    </script>
+  </head>
